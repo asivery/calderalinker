@@ -12,6 +12,7 @@ class Environment:
     result: str = ""
     outdir: str = "output"
     avail_url_base: str = ''
+    supress_js: bool = False
 
 @dataclass
 class Output:
@@ -215,8 +216,9 @@ class Caldera{environment.result} {{
     {'\n'.join(_exposed)}
 }}
 """
-    with open(join(environment.outdir, f'{environment.result}.js'), 'w') as e:
-        e.write(output_js)
+    if not environment.supress_js:
+        with open(join(environment.outdir, f'{environment.result}.js'), 'w') as e:
+            e.write(output_js)
 
 def linksofile(file_name):
     elffile = elftools.elf.elffile.ELFFile(open(file_name, 'rb'))
