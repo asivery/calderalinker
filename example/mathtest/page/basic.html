@@ -1,0 +1,41 @@
+<!doctype html>
+<title>Basic Emulator</title>
+
+<script src="libv86.js"></script>
+<script src="output/mathtest.js"></script>
+<script>
+"use strict";
+
+window.onload = function()
+{
+    var emulator = window.emulator = new V86({
+        wasm_path: "v86.wasm",
+        memory_size: 80 * 1024 * 1024,
+        vga_memory_size: 0,
+        bios: {
+            url: "seabios.bin",
+        },
+        multiboot: {
+            async: false,
+            url: "output/kernel.bin",
+        },
+        autostart: false,
+    });
+}
+</script>
+
+
+<p>Please open the developer console to see the results!</p>
+<button onclick="window.run()"> Run! </button>
+
+<script>
+
+async function run() {
+    const caldera = new Calderamathtest(window.emulator);
+    window.caldera = caldera;
+    await caldera.init();
+    console.log("Init ok.");
+    await caldera.test();
+}
+
+</script>
